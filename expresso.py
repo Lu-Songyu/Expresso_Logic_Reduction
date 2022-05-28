@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 from heapq import merge
 from operator import truediv
 from queue import Empty
 import re
 from typing import ByteString
 from xml.etree.ElementTree import ElementTree
+=======
+import re
+>>>>>>> master
 
 offSet =["101", "011", "111"]
 onSet = ["000", "100", "010", "001"]
@@ -11,6 +15,7 @@ dcSet = ["110"]
 
 # pass in one element(1st argument) and check if it can be reduced from the set(2nd/3rd argument)
 def check_validity(item, checkSet, num):
+<<<<<<< HEAD
     r = re.compile(item)
     newList = list(filter(r.match, checkSet))
     #print("reg list: ")
@@ -20,6 +25,26 @@ def check_validity(item, checkSet, num):
     return len(newList)==num 
 
     
+=======
+    count = 0
+    for x in checkSet:
+        if compareS(x, item):
+            count = count + 1
+    return count==num 
+
+# compare two logic input index by index
+def compareS(x, y):
+    for i in range(0, len(x)):
+        if x[i] == y[i]:
+            continue
+        else:
+            if x[i] == '.' or y[i] == '.':
+                continue
+            else: 
+                return False
+    return True
+
+>>>>>>> master
 
 def expand(item, set1, dcSet):
     mergeSet = set1 + dcSet
@@ -35,7 +60,10 @@ def expand(item, set1, dcSet):
 
 def remove_covered_implicants(item, set1):
     temp = item
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     e  = re.compile(item)
     setToDelete = list(filter(e.match, set1))
 
@@ -108,18 +136,33 @@ if __name__ == "__main__":
     onSet = tempL
     print(onSet)
 
+<<<<<<< HEAD
     print(" end of TEST1 ")
     print("  ")
     print("  ")
 
 
+=======
+    print("End of TEST 1")
+    print("  ")
+    print("  ")
+
+    
+>>>>>>> master
     print("check 00.")
     print(onSet)
     print(expand("00.", onSet, dcSet))
     er2 = reduce(onSet[1])
+<<<<<<< HEAD
     print(er2)
     print(" ")
     tempL2 = remove_covered_implicants(er2, onSet)
     #print(tempL)
     onSet = tempL2
     print(onSet)
+=======
+    tempL2 = remove_covered_implicants(er2, onSet)
+    #print(tempL)
+    onSet = tempL2
+    print(onSet)
+>>>>>>> master
