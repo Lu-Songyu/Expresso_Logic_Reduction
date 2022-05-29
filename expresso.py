@@ -1,13 +1,6 @@
-<<<<<<< HEAD
-from heapq import merge
-from operator import truediv
-from queue import Empty
 import re
-from typing import ByteString
-from xml.etree.ElementTree import ElementTree
-=======
-import re
->>>>>>> master
+
+from pkg_resources import empty_provider
 
 offSet =["101", "011", "111"]
 onSet = ["000", "100", "010", "001"]
@@ -15,17 +8,6 @@ dcSet = ["110"]
 
 # pass in one element(1st argument) and check if it can be reduced from the set(2nd/3rd argument)
 def check_validity(item, checkSet, num):
-<<<<<<< HEAD
-    r = re.compile(item)
-    newList = list(filter(r.match, checkSet))
-    #print("reg list: ")
-    #print(newList)
-    #print(len(newList)==num)
-    
-    return len(newList)==num 
-
-    
-=======
     count = 0
     for x in checkSet:
         if compareS(x, item):
@@ -44,7 +26,6 @@ def compareS(x, y):
                 return False
     return True
 
->>>>>>> master
 
 def expand(item, set1, dcSet):
     mergeSet = set1 + dcSet
@@ -60,10 +41,6 @@ def expand(item, set1, dcSet):
 
 def remove_covered_implicants(item, set1):
     temp = item
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     e  = re.compile(item)
     setToDelete = list(filter(e.match, set1))
 
@@ -128,41 +105,18 @@ def reduce(item):
     
 
 if __name__ == "__main__":
-    size = 3        
-        
-    er1 = reduce(onSet[0])
-    tempL = remove_covered_implicants(er1, onSet)
-    #print(tempL)
-    onSet = tempL
-    print(onSet)
+             
+    reSet = []
+    er = reduce(onSet[-1])
+    while onSet:
+        if(onSet[0] == er):
+            break
+        er = reduce(onSet[-1])
+        tempL = remove_covered_implicants(er, onSet)
+        onSet = tempL
+        print("one cycle")
+        print(onSet)
 
-<<<<<<< HEAD
-    print(" end of TEST1 ")
-    print("  ")
-    print("  ")
-
-
-=======
     print("End of TEST 1")
+    print(onSet)
     print("  ")
-    print("  ")
-
-    
->>>>>>> master
-    print("check 00.")
-    print(onSet)
-    print(expand("00.", onSet, dcSet))
-    er2 = reduce(onSet[1])
-<<<<<<< HEAD
-    print(er2)
-    print(" ")
-    tempL2 = remove_covered_implicants(er2, onSet)
-    #print(tempL)
-    onSet = tempL2
-    print(onSet)
-=======
-    tempL2 = remove_covered_implicants(er2, onSet)
-    #print(tempL)
-    onSet = tempL2
-    print(onSet)
->>>>>>> master
