@@ -1,10 +1,12 @@
 import re
+import sys
+from turtle import clear
 
-from pkg_resources import empty_provider
 
 offSet =["101", "011", "111"]
 onSet = ["000", "100", "010", "001"]
 dcSet = ["110"]
+
 
 # pass in one element(1st argument) and check if it can be reduced from the set(2nd/3rd argument)
 def check_validity(item, checkSet, num):
@@ -101,8 +103,8 @@ def maxReduce(x, s1, s2):
 # to find the best use of * for remove implicants
 def reduce(item):
     l= differentStartingIndex(item)
-    print(l)
-    best = ""
+    #print(l)
+    best = item
     count = 0
     for le in l:
         lr = maxReduce(le, onSet, dcSet)
@@ -115,31 +117,76 @@ def reduce(item):
     return best 
     
 
+
 if __name__ == "__main__":
-             
-    reSet = []
-
-    count = 0
-    while type(onSet[-1]) != list:
-
-        print(" ")
-        print("CYCLE: " + str(count))
-        er = reduce(onSet[count])
-        tempL = remove_covered_implicants(er, onSet)
-        onSet = tempL
-        count = count + 1
-        print(onSet)
-
-    print("END OF OP")
+    
+    general = []
+    # parse in PLA file
+    filename = sys.argv[1]
+    f = open(filename, "r")
+    inputN = int(f.readline()[3])
+    outputN = int(f.readline()[3])
+    # initialize individual lists for every output variable
+    # it corresponds to f1, f2, f3 ...
+    for x in range(0, outputN):
+        newList = []
+        general.append(newList)
+    # read logic
+    
+    line = f.readline()
+    while(line != ''):
+        text = line[0: inputN]
+        count = 0
+        l = inputN + 2
+        r = outputN + 2 + inputN - 1
+        while l <= r:
+            if line[l] == '1':
+                general[count].append(text)
+            l = l + 1
+            count = count + 1
+        line = f.readline()
+    
+    print("CHECK PARSE ONSET")
+    for x in general:
+        print(x)
+    
+    # start op
+    print(" ")
+    print("START OF OP")
     print("--------------")
     print(" ")
-    print(" ")
+    
+    for x in general: 
 
-    reducedLogic = []
+        onSet = x
 
-    for x in onSet:
-        reducedLogic.append(x[0])
-    print("RESULT: ")
-    print(reducedLogic)
+        count = 0
+        while type(onSet[-1]) != list:
+
+            #print(" ")
+            #print("CYCLE: " + str(count))
+            #print(onSet[count])
+            er = reduce(onSet[count])
+            tempL = remove_covered_implicants(er, onSet)
+            onSet = tempL
+            count = count + 1
+            #print(onSet)
+
+       
+
+        reducedLogic = []
+
+        for x in onSet:
+            reducedLogic.append(x[0])
+
+        
+        print("RESULT: ")
+        print("Size of cover: " + str(len(reducedLogic)) + " products")
+        print(reducedLogic)
+
+        print("END OF OP FOR ONE OUTPUT")
+        print("--------------")
+        print(" ")
+        print(" ")
 
     
