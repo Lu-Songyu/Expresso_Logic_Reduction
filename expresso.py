@@ -10,6 +10,11 @@ dcSet = ["110"]
 def check_validity(item, checkSet, num):
     count = 0
     for x in checkSet:
+        if type(x) == list:
+            for y in x:
+                if compareS(y, item):
+                    if y == "000":
+                        count = count + 1
         if compareS(x, item):
             count = count + 1
     return count==num 
@@ -37,26 +42,32 @@ def expand(item, set1, dcSet):
     #print("before check validity " + str(item))
     
     return check_validity(item, mergeSet, pow(2, count)) 
-           
+
+
+def union(item, set1):
+    u = [item]
+    for x in set1:
+        if type(x) == list:
+            # 00. comapre ['..0', '000', '100', '010']
+             continue
+        else:
+            if compareS(x, item):
+                u.append(x)
+    
+    return u
 
 def remove_covered_implicants(item, set1):
-    temp = item
-    e  = re.compile(item)
-    setToDelete = list(filter(e.match, set1))
-
-  
-
-    output = [temp]
-    for i in set1:
-        if i not in setToDelete:
-            output.append(i)
-    
+    un = union(item, set1)
+    output = []
+    output.append(un)
+    for x in set1:
+        if x not in un:
+            output.append(x)
     return output
 
 # find all possible way to start
 def differentStartingIndex(item):
     combo = []
-
     for x in range(0, len(item)):
         temp = item[0:x] + "." + item[x+1:]
         combo.append(temp)
@@ -107,16 +118,28 @@ def reduce(item):
 if __name__ == "__main__":
              
     reSet = []
-    er = reduce(onSet[-1])
-    while onSet:
-        if(onSet[0] == er):
-            break
-        er = reduce(onSet[-1])
+
+    count = 0
+    while type(onSet[-1]) != list:
+
+        print(" ")
+        print("CYCLE: " + str(count))
+        er = reduce(onSet[count])
         tempL = remove_covered_implicants(er, onSet)
         onSet = tempL
-        print("one cycle")
+        count = count + 1
         print(onSet)
 
-    print("End of TEST 1")
-    print(onSet)
-    print("  ")
+    print("END OF OP")
+    print("--------------")
+    print(" ")
+    print(" ")
+
+    reducedLogic = []
+
+    for x in onSet:
+        reducedLogic.append(x[0])
+    print("RESULT: ")
+    print(reducedLogic)
+
+    
